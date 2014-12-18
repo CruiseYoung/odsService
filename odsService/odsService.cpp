@@ -9,7 +9,10 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+//#include "StdAfx.h"
+#include <tchar.h>
+//#include <WinSock2.h>
+#include <windows.h>
 #include "odsService.h"
 
 //-----------------------------------------------------------------------

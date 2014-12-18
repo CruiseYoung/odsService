@@ -9,9 +9,13 @@
 //
 //////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+//#include "StdAfx.h"
+#include <tchar.h>
+//#include <WinSock2.h>
+#include <windows.h>
 #include "odsError.h"
 
+#ifdef __AFXWIN_H__
 //-------------------------------------------------------------
 //	用缺省的语言取得系统错误码对应的错误信息( 格式 1 )
 //-------------------------------------------------------------
@@ -25,11 +29,13 @@ void odsGetSysErrMsg( DWORD dwErrCode, CString& strMsg )
 	
 	DWORD dwReturnCode = FormatMessage
 				(
+                 //FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                 //FORMAT_MESSAGE_IGNORE_INSERTS |
 				 FORMAT_MESSAGE_FROM_SYSTEM |
 				 FORMAT_MESSAGE_MAX_WIDTH_MASK,	//Flags
 				 NULL,							//No message source
 				 dwErrCode,						//Message ID
-				 dwDefaultLanguageID,			//Language ID
+				 dwDefaultLanguageID,			//Language ID //MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 				 strBuf,						//Pointer of message buffer
 				 LEN_ERR_MSG,					//Message buffer size
 				 NULL							//No arguments
@@ -40,6 +46,7 @@ void odsGetSysErrMsg( DWORD dwErrCode, CString& strMsg )
 	else
 		strMsg = strBuf;
 }
+#endif
 
 //-------------------------------------------------------------
 //	用缺省的语言取得系统错误码对应的错误信息( 格式 2 )
@@ -56,11 +63,13 @@ void odsGetSysErrMsg( DWORD dwErrCode, LPTSTR strBuf, int lenMsg )
 	
 	DWORD dwReturnCode = FormatMessage
 				(
+                 //FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                 //FORMAT_MESSAGE_IGNORE_INSERTS |
 				 FORMAT_MESSAGE_FROM_SYSTEM |
 				 FORMAT_MESSAGE_MAX_WIDTH_MASK,	//Flags
 				 NULL,							//No message source
 				 dwErrCode,						//Message ID
-				 dwDefaultLanguageID,			//Language ID
+				 dwDefaultLanguageID,			//Language ID //MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
 				 strBuf,						//Pointer of message buffer
 				 lenMsg,						//Message buffer size
 				 NULL							//No arguments
