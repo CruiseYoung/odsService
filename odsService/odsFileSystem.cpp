@@ -9,7 +9,10 @@
 //
 //////////////////////////////////////////////////////////////
 
-#include "StdAfx.h"
+//#include "StdAfx.h"
+#include <tchar.h>
+//#include <WinSock2.h>
+#include <windows.h>
 #include "odsFileSystem.h"
 
 //------------------------------------------------------------
@@ -26,6 +29,7 @@ void odsRemoveLastSlash( LPTSTR lpszDirectory )
 		lpszDirectory[i - 1] = _T('\0');	
 }
 
+#ifdef __AFXWIN_H__
 //------------------------------------------------------------
 // 删除路径名最后的反斜线(格式2)
 //------------------------------------------------------------
@@ -35,6 +39,7 @@ void odsRemoveLastSlash( CString& strDirectory )
 	odsRemoveLastSlash( p );
 	strDirectory.ReleaseBuffer();
 }
+#endif
 
 //------------------------------------------------------------
 // 判断由路径名和文件名合成的全称文件名长度是否超过了系统允许的最大长度
@@ -531,8 +536,8 @@ BOOL odsMoveDirectory
 		//执行拷贝操作
 		bReturnCode = odsCopyDirectory
 			   (
-				(LPSTR)lpszSourceDirectory,
-				(LPSTR)lpszDestinationDirectory,
+				lpszSourceDirectory,
+				lpszDestinationDirectory,
 				TRUE,									// include sub dir
 				TRUE,									// overwrite
 				pstError
@@ -543,7 +548,7 @@ BOOL odsMoveDirectory
 			//执行删除操作
 			bReturnCode = odsRemoveDirectory
 			   (
-			    (LPSTR)lpszSourceDirectory, 
+			    lpszSourceDirectory, 
 				TRUE,
 				pstError
 			   );

@@ -2,7 +2,10 @@
 // service.cpp - 服务程序框架
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
+#include <tchar.h>
+//#include <WinSock2.h>
+#include <windows.h>
 #include "main.h"
 #include "odsService.h"
 #include "odsError.h"
@@ -25,8 +28,9 @@ static char THIS_FILE[] = __FILE__;
 // 服务程序的依赖关系
 #define SRV_DEPENDENCIES				_T("\0\0")
 
-
+#ifdef __AFXWIN_H__
 CWinApp theApp;
+#endif
 
 static SERVICE_STATUS_HANDLE g_sshStatusHandle;
 static BOOL g_bDebug = FALSE;
@@ -47,12 +51,14 @@ void _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
 	int nRetCode = 0;
 
+#ifdef __AFXWIN_H__
 	// initialize MFC and print and error on failure
 	if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0))
 	{		
 		odsAddToSystemLog( SRV_APPNAME, ODS_MSG_INITMFC, EVENTLOG_ERROR_TYPE );
 		return;
 	}
+#endif
 
 	// 参数判断
 	if ( (argc > 1) && ( *argv[1] == _T('-') || *argv[1] == _T('/') ) )
@@ -237,7 +243,7 @@ void ServiceStart (DWORD dwArgc, LPTSTR *lpszArgv, STODSERROR* pstError)
 
 	// …………………………………………
 	// 初始化终止事件
-	hStopEvent = CreateEvent( NULL, FALSE, FALSE, "_=STOP=_" );
+	hStopEvent = CreateEvent( NULL, FALSE, FALSE, _T("_=STOP=_") );
 	
 
 	// 进入服务程序的主流程
@@ -263,8 +269,8 @@ void ServiceStart (DWORD dwArgc, LPTSTR *lpszArgv, STODSERROR* pstError)
 		if ( WaitForSingleObject( hStopEvent, 10000 ) != WAIT_TIMEOUT )
 			break;
 
-		char tmp[100];
-		sprintf( tmp, "%d", i++ );
+		TCHAR tmp[100];
+        _stprintf(tmp, _T("%d"), i++);
 		odsAddToSystemLog( SRV_APPNAME, tmp, EVENTLOG_INFORMATION_TYPE );
 	}    
      
